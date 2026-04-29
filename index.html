@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>APEX — Sistema de Alta Performance</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="app">
+
+  <!-- SIDEBAR -->
+  <nav class="sidebar">
+    <div class="logo">APEX</div>
+    <div class="nav-items">
+      <div class="nav-item active" onclick="go('dash')" data-p="dash">
+        <span class="nav-icon">⚡</span><span class="nav-tip">Dashboard</span>
+      </div>
+      <div class="nav-item" onclick="go('rotina')" data-p="rotina">
+        <span class="nav-icon">📅</span><span class="nav-tip">Rotina Diária</span>
+      </div>
+      <div class="nav-item" onclick="go('higiene')" data-p="higiene">
+        <span class="nav-icon">🧼</span><span class="nav-tip">Higiene & Skincare</span>
+      </div>
+      <div class="nav-item" onclick="go('enem')" data-p="enem">
+        <span class="nav-icon">📚</span><span class="nav-tip">Estudo ENEM</span>
+      </div>
+      <div class="nav-item" onclick="go('habitos')" data-p="habitos">
+        <span class="nav-icon">🔥</span><span class="nav-tip">Hábitos</span>
+      </div>
+      <div class="nav-item" onclick="go('flashcard')" data-p="flashcard">
+        <span class="nav-icon">🧠</span><span class="nav-tip">Flashcards</span>
+      </div>
+    </div>
+  </nav>
+
+  <!-- MAIN -->
+  <main class="main">
+
+    <!-- ══ DASHBOARD ══ -->
+    <div class="page active" id="page-dash">
+      <div class="page-title">Bom dia, <span class="hi">Titã</span> 🔱</div>
+      <div class="page-sub" id="dash-date">Carregando...</div>
+
+      <div class="quote mb2">
+        <div class="quote-txt" id="dash-quote">Trate seu corpo como uma máquina de precisão.</div>
+        <div class="quote-src">— Manual de Alta Performance</div>
+      </div>
+
+      <!-- score + stats -->
+      <div style="display:flex;align-items:center;gap:16px;margin-bottom:20px;flex-wrap:wrap">
+        <div class="score-ring">
+          <svg width="90" height="90" viewBox="0 0 90 90">
+            <circle cx="45" cy="45" r="38" fill="none" stroke="rgba(123,97,255,0.1)" stroke-width="7"/>
+            <circle cx="45" cy="45" r="38" fill="none" stroke="url(#pg)" stroke-width="7" stroke-linecap="round"
+              stroke-dasharray="238.76" id="score-circle" stroke-dashoffset="238.76"/>
+            <defs>
+              <linearGradient id="pg" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stop-color="#7b61ff"/>
+                <stop offset="100%" stop-color="#00e5c8"/>
+              </linearGradient>
+            </defs>
+          </svg>
+          <div class="score-val"><span id="score-num">0</span><small>SCORE</small></div>
+        </div>
+        <div style="flex:1;min-width:200px">
+          <div style="font-family:var(--font-display);font-weight:800;font-size:22px;letter-spacing:-0.5px" id="score-label">Calibrando...</div>
+          <div style="font-size:12px;color:var(--text2);margin-top:4px" id="score-sub">Complete suas rotinas diárias</div>
+          <div class="prog-wrap" style="margin-top:10px"><div class="prog-bar pb-purple pb-thick" id="score-bar" style="width:0%"></div></div>
+        </div>
+      </div>
+
+      <div class="g4 mb2">
+        <div class="stat">
+          <div class="stat-lbl">Rotina</div>
+          <div class="stat-val v-purple" id="d-rot">0%</div>
+          <div class="stat-hint" id="d-rot-lbl">itens concluídos</div>
+        </div>
+        <div class="stat">
+          <div class="stat-lbl">Higiene</div>
+          <div class="stat-val v-cyan" id="d-hig">0%</div>
+          <div class="stat-hint">protocolo diário</div>
+        </div>
+        <div class="stat">
+          <div class="stat-lbl">Estudo</div>
+          <div class="stat-val v-gold" id="d-est">0%</div>
+          <div class="stat-hint" id="d-est-lbl">blocos feitos</div>
+        </div>
+        <div class="stat">
+          <div class="stat-lbl">Dia atual</div>
+          <div class="stat-val" id="d-dia" style="font-size:18px">—</div>
+          <div class="stat-hint" id="d-dia-lbl">tipo do dia</div>
+        </div>
+      </div>
+
+      <!-- próximo evento -->
+      <div class="g2">
+        <div class="card">
+          <div class="card-label">Próximo evento do dia</div>
+          <div id="next-event-content">
+            <div style="color:var(--text2);font-size:13px">Calculando...</div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-label">Pilares de hoje</div>
+          <div style="display:flex;flex-direction:column;gap:10px" id="pillars-today"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ ROTINA DIÁRIA ══ -->
+    <div class="page" id="page-rotina">
+      <div class="page-title">Rotina <span class="hi">Diária</span></div>
+      <div class="page-sub">Selecione o dia e marque cada etapa cumprida</div>
+
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+        <div class="week-tabs" id="week-tabs"></div>
+        <button class="edit-toggle" id="edit-toggle-btn" onclick="toggleEditMode()">✏️ Editar Rotina</button>
+      </div>
+
+      <div id="rotina-content">
+        <div class="g2">
+          <div id="rot-morning-card" class="card">
+            <div class="card-label">🌅 Manhã</div>
+            <div id="rot-morning"></div>
+          </div>
+          <div id="rot-afternoon-card" class="card">
+            <div class="card-label" id="rot-aft-label">☀️ Tarde</div>
+            <div id="rot-afternoon"></div>
+          </div>
+        </div>
+        <div style="margin-top:14px" class="card" id="rot-night-card">
+          <div class="card-label">🌙 Noite — Ritual de Descompressão</div>
+          <div id="rot-night"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ HIGIENE & SKINCARE ══ -->
+    <div class="page" id="page-higiene">
+      <div class="page-title">Higiene & <span class="cyan">Skincare</span></div>
+      <div class="page-sub">Protocolo clínico diário — excelência dermatológica</div>
+
+      <div class="g2 mb2">
+        <!-- bucal -->
+        <div class="card">
+          <div class="card-label">🦷 Higiene Bucal</div>
+          <div id="bucal-list"></div>
+        </div>
+        <!-- corporal -->
+        <div class="card">
+          <div class="card-label">🚿 Higiene Corporal</div>
+          <div id="corp-list"></div>
+        </div>
+      </div>
+
+      <div class="g2">
+        <!-- skincare -->
+        <div class="card">
+          <div class="card-label">✨ Skincare — Manhã</div>
+          <div id="skin-manha"></div>
+          <div class="section-sep"></div>
+          <div class="card-label">🌙 Skincare — Noite</div>
+          <div id="skin-noite"></div>
+        </div>
+        <!-- perfume -->
+        <div class="card">
+          <div class="card-label">🌸 Estratégia de Perfume & Extras</div>
+          <div id="skin-extras"></div>
+          <div class="section-sep"></div>
+          <div class="card-label">📦 Kit de Sobrevivência (Saída)</div>
+          <div style="display:flex;flex-wrap:wrap;gap:7px;margin-top:4px">
+            <span class="pill pill-cyan">🪥 Escova</span>
+            <span class="pill pill-cyan">🦷 Pasta</span>
+            <span class="pill pill-cyan">🧵 Fio dental</span>
+            <span class="pill pill-accent">🧴 Desodorante</span>
+            <span class="pill pill-gold">🌸 Perfume</span>
+            <span class="pill pill-accent">💧 Hidratante</span>
+          </div>
+          <div style="font-size:11px;color:var(--text3);margin-top:10px">Necessaire pronta antes de sair — especialmente na quarta (escola → estágio)</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ ESTUDO ENEM ══ -->
+    <div class="page" id="page-enem">
+      <div class="page-title">Estudo <span class="gold">ENEM</span></div>
+      <div class="page-sub">Método ativo de alta retenção — questões primeiro, teoria depois</div>
+
+      <!-- blocos de estudo -->
+      <div class="card mb2">
+        <div class="card-label">📋 Blocos de Estudo do Dia</div>
+        <div id="study-blocks"></div>
+        <div class="section-sep"></div>
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <div>
+            <div style="font-size:11px;color:var(--text3)">Total completado</div>
+            <div style="font-family:var(--font-display);font-weight:700;font-size:20px;color:var(--gold)" id="study-done-label">0 / 0 blocos</div>
+          </div>
+          <div class="prog-wrap" style="width:140px"><div class="prog-bar pb-gold pb-thick" id="study-bar" style="width:0%"></div></div>
+        </div>
+      </div>
+
+      <div class="g2 mb2">
+        <!-- redação -->
+        <div class="card">
+          <div class="card-label">✍️ Redação — Sábado</div>
+          <div id="redacao-list"></div>
+        </div>
+        <!-- pilares ENEM -->
+        <div class="card">
+          <div class="card-label">⚙️ Princípios do Método</div>
+          <div style="display:flex;flex-direction:column;gap:10px">
+            <div style="background:var(--bg3);border-radius:var(--r);padding:12px;border:1px solid var(--border)">
+              <div style="font-size:13px;font-weight:500">🚫 Sem resumos coloridos</div>
+              <div style="font-size:11px;color:var(--text2);margin-top:3px">Faça questões exaustivamente. Resumos são ilusão de estudo.</div>
+            </div>
+            <div style="background:var(--bg3);border-radius:var(--r);padding:12px;border:1px solid var(--border)">
+              <div style="font-size:13px;font-weight:500">📱 Celular no outro cômodo</div>
+              <div style="font-size:11px;color:var(--text2);margin-top:3px">A mera presença do aparelho rouba carga cognitiva mesmo sem usar.</div>
+            </div>
+            <div style="background:var(--bg3);border-radius:var(--r);padding:12px;border:1px solid var(--border)">
+              <div style="font-size:13px;font-weight:500">😴 Cochilo de 20min (segunda)</div>
+              <div style="font-size:11px;color:var(--text2);margin-top:3px">Após almoço na segunda-feira. Reseta atenção e melhora tarde.</div>
+            </div>
+            <div style="background:var(--bg3);border-radius:var(--r);padding:12px;border:1px solid var(--border)">
+              <div style="font-size:13px;font-weight:500">🔁 Prática Espaçada</div>
+              <div style="font-size:11px;color:var(--text2);margin-top:3px">30 min de revisão noturna do que viu na escola — toda noite de semana.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- notas de estudo -->
+      <div class="card">
+        <div class="card-label">📝 Registro de Estudo</div>
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <div>
+            <div style="font-size:11px;color:var(--text2);margin-bottom:6px;text-transform:uppercase;letter-spacing:0.5px">Matéria de hoje</div>
+            <input id="study-subject" placeholder="Ex: Matemática — Funções" style="background:var(--bg3);border:1px solid var(--border2);border-radius:var(--r);padding:9px 13px;color:var(--text);font-size:13px;width:100%;outline:none;font-family:var(--font-body)" onfocus="this.style.borderColor='var(--accent)'" onblur="this.style.borderColor='var(--border2)'">
+          </div>
+          <div>
+            <div style="font-size:11px;color:var(--text2);margin-bottom:6px;text-transform:uppercase;letter-spacing:0.5px">Dúvidas / pontos fracos</div>
+            <textarea id="study-notes" rows="3" placeholder="Anote o que ficou em dúvida para revisar depois..." style="background:var(--bg3);border:1px solid var(--border2);border-radius:var(--r);padding:9px 13px;color:var(--text);font-size:13px;width:100%;outline:none;font-family:var(--font-body);resize:none" onfocus="this.style.borderColor='var(--accent)'" onblur="this.style.borderColor='var(--border2)'"></textarea>
+          </div>
+          <div style="display:flex;gap:10px">
+            <input id="study-score" type="number" placeholder="Questões certas %" min="0" max="100" style="background:var(--bg3);border:1px solid var(--border2);border-radius:var(--r);padding:9px 13px;color:var(--text);font-size:13px;width:80px;outline:none;font-family:var(--font-body);text-align:center" onfocus="this.style.borderColor='var(--accent)'" onblur="this.style.borderColor='var(--border2)'">
+            <button class="btn btn-gold" onclick="saveStudyNote()" style="flex:1">💾 Salvar Registro</button>
+          </div>
+          <div id="study-notes-list"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ HÁBITOS ══ -->
+    <div class="page" id="page-habitos">
+      <div class="page-title">Rastreador de <span class="hi">Hábitos</span></div>
+      <div class="page-sub">Última semana — marque cada dia cumprido</div>
+
+      <div class="card mb2">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+          <div class="card-label" style="margin-bottom:0">Consistência Semanal</div>
+          <div style="font-family:var(--font-display);font-weight:700;font-size:14px;color:var(--accent)" id="habit-total-pct">0%</div>
+        </div>
+        <div class="prog-wrap" style="margin-bottom:4px"><div class="prog-bar pb-purple pb-thick" id="habit-bar" style="width:0%"></div></div>
+        <!-- days header -->
+        <div style="display:flex;gap:5px;margin:14px 0 8px;padding-left:calc(1px + 140px + 12px)" id="habit-header"></div>
+        <div id="habit-rows"></div>
+      </div>
+
+      <div class="card">
+        <div class="card-label">🏆 Conquistas</div>
+        <div id="habit-achievements" style="display:flex;flex-wrap:wrap;gap:8px">
+          <div style="color:var(--text3);font-size:12px">Complete hábitos para desbloquear conquistas!</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ FLASHCARDS ══ -->
+    <div class="page" id="page-flashcard">
+      <div class="page-title"><span class="hi">Flash</span>cards</div>
+      <div class="page-sub">Conceitos chave para memorização — clique para revelar</div>
+
+      <div style="display:flex;gap:10px;margin-bottom:18px;flex-wrap:wrap" id="fc-filter">
+        <button class="btn btn-prime btn-sm active-fc" onclick="setFcFilter('all',this)">Todos</button>
+        <button class="btn btn-ghost btn-sm" onclick="setFcFilter('bio',this)">Bio/Química</button>
+        <button class="btn btn-ghost btn-sm" onclick="setFcFilter('hig',this)">Higiene</button>
+        <button class="btn btn-ghost btn-sm" onclick="setFcFilter('neuro',this)">Neurociência</button>
+        <button class="btn btn-ghost btn-sm" onclick="setFcFilter('enem',this)">ENEM</button>
+      </div>
+
+      <div id="fc-card-area" class="mb2"></div>
+
+      <div style="display:flex;justify-content:center;gap:12px">
+        <button class="btn btn-ghost" onclick="prevCard()">← Anterior</button>
+        <div style="display:flex;align-items:center;font-size:12px;color:var(--text3);font-family:var(--font-display);font-weight:700" id="fc-counter">1 / 1</div>
+        <button class="btn btn-prime" onclick="nextCard()">Próximo →</button>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="scripts.js"></script>
+</body>
+</html>
