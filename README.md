@@ -14,7 +14,7 @@ Sistema de organização de rotina com foco em produtividade e clareza visual.
 
 ## 📸 Preview
 <p align="center">
-  <img src="assets/preview.png" width="800">
+  <img src=""C:\Users\alexa\Pictures\Screenshots\preview5.png.png"" width="800">
 </p>
 
 ## 🌐 Acesse o projeto
