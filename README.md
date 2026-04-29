@@ -13,7 +13,9 @@ Sistema de organização de rotina com foco em produtividade e clareza visual.
 - JavaScript (em evolução)
 
 ## 📸 Preview
-(coloque aqui uma imagem do projeto)
+<p align="center">
+  <img src="assets/preview.png" width="800">
+</p>
 
 ## 🌐 Acesse o projeto
 [https://alexandreitalop12-glitch.github.io/RotinaPro/](https://alexandreitalop12-glitch.github.io/RotinaPro/)
