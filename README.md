@@ -16,7 +16,7 @@ Sistema de organização de rotina com foco em produtividade e clareza visual.
 (coloque aqui uma imagem do projeto)
 
 ## 🌐 Acesse o projeto
-https://SEU-LINK-AQUI
+[https://alexandreitalop12-glitch.github.io/RotinaPro/](https://alexandreitalop12-glitch.github.io/RotinaPro/)
 
 ## 📌 Sobre
 Projeto desenvolvido com foco em evolução prática em Front-End, aplicando conceitos de estrutura, estilo e organização de interface.
