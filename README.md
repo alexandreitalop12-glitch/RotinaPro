@@ -12,7 +12,7 @@ Sistema de organização de rotina com foco em produtividade e clareza visual.
 - CSS
 - JavaScript (em evolução)
 
-## 📸 Preview
+
 
 ## 📸 Preview
 
